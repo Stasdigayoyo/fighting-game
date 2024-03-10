@@ -8,19 +8,43 @@ context.fillRect(0, 0, canvas.width, canvas.height);
 
 const gravity = 5;
 class Sprite {
-  constructor({ position, velocity }) {
+  constructor({ position, velocity, color = "red", offset }) {
     this.position = position;
     this.velocity = velocity;
+    this.width = 50;
     this.height = 150;
     this.lastKey;
+    this.attackBox = {
+      position: {
+        x: this.position.x,
+        y: this.position.y,
+      },
+      offset,
+      width: 100,
+      height: 50,
+    };
+    this.isAttacking;
+    this.color = color;
   }
   draw() {
-    context.fillStyle = "red";
-    context.fillRect(this.position.x, this.position.y, 50, this.height);
+    context.fillStyle = this.color;
+    context.fillRect(this.position.x, this.position.y, this.width, this.height);
+
+    //attack box
+    if (this.isAttacking) {
+      context.fillStyle = "green";
+      context.fillRect(
+        this.attackBox.position.x,
+        this.attackBox.position.y,
+        this.attackBox.width,
+        this.attackBox.height
+      );
+    }
   }
   update() {
     this.draw();
-
+    this.attackBox.position.x = this.position.x + this.attackBox.offset.x;
+    this.attackBox.position.y = this.position.y;
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
     if (this.position.y + this.height + this.velocity.y >= canvas.height) {
@@ -28,6 +52,12 @@ class Sprite {
     } else {
       this.velocity.y += gravity;
     }
+  }
+  attack() {
+    this.isAttacking = true;
+    setTimeout(() => {
+      this.isAttacking = false;
+    }, 100);
   }
 }
 
@@ -37,6 +67,10 @@ const player = new Sprite({
     y: 0,
   },
   velocity: {
+    x: 0,
+    y: 0,
+  },
+  offset: {
     x: 0,
     y: 0,
   },
@@ -53,6 +87,11 @@ const enemy = new Sprite({
     x: 0,
     y: 0,
   },
+  offset: {
+    x: -50,
+    y: 0,
+  },
+  color: "blue",
 });
 enemy.draw();
 
@@ -76,6 +115,21 @@ const keys = {
   },
 };
 
+//collision condition
+function rectangularCollision({ rentangle1, rentangle2 }) {
+  return (
+    rentangle1.attackBox.position.x + rentangle1.attackBox.width >=
+      rentangle2.position.x &&
+    rentangle1.attackBox.position.x <=
+      rentangle2.position.x + rentangle2.width &&
+    rentangle1.attackBox.position.y + rentangle1.attackBox.height >=
+      rentangle2.position.y &&
+    rentangle1.attackBox.position.y <=
+      rentangle2.attackBox.position.y + rentangle2.attackBox.position.y
+  );
+}
+
+//animation
 function animate() {
   window.requestAnimationFrame(animate);
   context.fillStyle = "black";
@@ -91,18 +145,41 @@ function animate() {
   } else if (keys.d.pressed && player.lastKey === "d") {
     player.velocity.x = 10;
   }
-
   //enemy movement
-
   if (keys.ArrowLeft.pressed && enemy.lastKey === "ArrowLeft") {
     enemy.velocity.x = -10;
   } else if (keys.ArrowRight.pressed && enemy.lastKey === "ArrowRight") {
     enemy.velocity.x = 10;
   }
+
+  //detect for collision
+  //player
+  if (
+    rectangularCollision({
+      rentangle1: player,
+      rentangle2: enemy,
+    }) &&
+    player.isAttacking
+  ) {
+    player.isAttacking = false;
+    console.log("player attack");
+  }
+  //enemy
+  if (
+    rectangularCollision({
+      rentangle1: enemy,
+      rentangle2: player,
+    }) &&
+    enemy.isAttacking
+  ) {
+    enemy.isAttacking = false;
+    console.log("enemy attack");
+  }
 }
 animate();
 
 window.addEventListener("keydown", (event) => {
+  //player keys
   switch (event.key) {
     case "d":
       keys.d.pressed = true;
@@ -114,6 +191,9 @@ window.addEventListener("keydown", (event) => {
       break;
     case "w":
       player.velocity.y = -40;
+      break;
+    case " ":
+      player.attack();
       break;
 
     //enemy keys
@@ -128,8 +208,10 @@ window.addEventListener("keydown", (event) => {
     case "ArrowUp":
       enemy.velocity.y = -40;
       break;
+    case "ArrowDown":
+      enemy.attack();
+      break;
   }
-  console.log(event.key);
 });
 
 window.addEventListener("keyup", (event) => {
@@ -149,5 +231,4 @@ window.addEventListener("keyup", (event) => {
       keys.ArrowLeft.pressed = false;
       break;
   }
-  console.log(event.key);
 });
