@@ -1,3 +1,26 @@
-<canvas></canvas>
+<head>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="health__bar">
+      <div class="player__parent">
+        <div class="health__bar_player"></div>
+        <div id="playerHealth" class="health__bar_player_absolute"></div>
+      </div>
 
-<script src="index.js"></script>
+      <div class="health__bar_timer"></div>
+      <div class="enemy__parent">
+        <div class="health__bar_enemy"></div>
+        <div
+          id="enemyHealth"
+          class="health__bar_enemy_absolute"
+          style="left: 0"
+        ></div>
+      </div>
+    </div>
+    <canvas></canvas>
+  </div>
+
+  <script src="index.js"></script>
+</body>

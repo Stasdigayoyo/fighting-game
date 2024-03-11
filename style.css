@@ -1,0 +1,51 @@
+* {
+  box-sizing: border-box;
+}
+.container {
+  position: relative;
+  display: inline-block;
+}
+.health__bar {
+  position: absolute;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  padding: 20px;
+}
+
+.health__bar_player {
+  background-color: yellow;
+  height: 30px;
+  width: 100%;
+}
+.health__bar_timer {
+  background-color: red;
+  height: 100px;
+  width: 100px;
+  flex-shrink: 0;
+}
+.enemy__parent,
+.player__parent {
+  position: relative;
+  height: 30px;
+  width: 100%;
+}
+.player__parent {
+  display: flex;
+  justify-content: flex-end;
+}
+.health__bar_enemy {
+  background-color: yellow;
+  height: 30px;
+}
+.health__bar_enemy_absolute,
+.health__bar_player_absolute {
+  position: absolute;
+  background-color: blue;
+  top: 0;
+  right: 0;
+  bottom: 0;
+}
+.health__bar_player_absolute {
+  width: 100%;
+}
