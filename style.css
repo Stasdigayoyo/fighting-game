@@ -23,6 +23,9 @@
   height: 100px;
   width: 100px;
   flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .enemy__parent,
 .player__parent {
@@ -48,4 +51,15 @@
 }
 .health__bar_player_absolute {
   width: 100%;
+}
+.displayText {
+  position: absolute;
+  color: white;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: none;
 }
