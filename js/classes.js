@@ -1,16 +1,39 @@
 class Sprite {
-  constructor({ position, imageSrc }) {
+  constructor({ position, imageSrc, scale = 1, frameMax = 1 }) {
     this.position = position;
     this.width = 50;
     this.height = 150;
     this.image = new Image();
     this.image.src = imageSrc;
+    this.scale = scale;
+    this.frameMax = frameMax;
+    this.frameCurrent = 0;
+    this.frameEllapsed = 0;
+    this.frameHold = 5;
   }
   draw() {
-    context.drawImage(this.image, this.position.x, this.position.y);
+    context.drawImage(
+      this.image,
+      this.frameCurrent * (this.image.width / this.frameMax),
+      0,
+      this.image.width / this.frameMax,
+      this.image.height,
+      this.position.x,
+      this.position.y,
+      (this.image.width / this.frameMax) * this.scale,
+      this.image.height * this.scale
+    );
   }
   update() {
     this.draw();
+    this.frameEllapsed++;
+    if (this.frameEllapsed % this.frameHold === 0) {
+      if (this.frameCurrent < this.frameMax - 1) {
+        this.frameCurrent++;
+      } else {
+        this.frameCurrent = 0;
+      }
+    }
   }
 }
 class Figther {

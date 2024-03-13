@@ -16,6 +16,16 @@ const background = new Sprite({
   imageSrc: "./img/background.png",
 });
 
+const shop = new Sprite({
+  position: {
+    x: 619,
+    y: 135,
+  },
+  imageSrc: "./img/shop.png",
+  scale: 2.7,
+  frameMax: 6,
+});
+
 const player = new Figther({
   position: {
     x: 0,
@@ -78,6 +88,7 @@ function animate() {
   context.fillStyle = "black";
   context.fillRect(0, 0, canvas.width, canvas.height);
   background.update();
+  shop.update();
   player.update();
   enemy.update();
 
@@ -106,7 +117,7 @@ function animate() {
     player.isAttacking
   ) {
     player.isAttacking = false;
-    enemy.health -= 20;
+    enemy.health -= 10;
     document.querySelector("#enemyHealth").style.width = enemy.health + "%";
   }
   //enemy collision
@@ -118,7 +129,7 @@ function animate() {
     enemy.isAttacking
   ) {
     enemy.isAttacking = false;
-    player.health -= 20;
+    player.health -= 10;
     document.querySelector("#playerHealth").style.width = player.health + "%";
   }
 
