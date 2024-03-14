@@ -39,6 +39,13 @@ const player = new Figther({
     x: 0,
     y: 0,
   },
+  imageSrc: "./img/SamuraiMack/Idle.png",
+  frameMax: 8,
+  scale: 2.5,
+  offset: {
+    x: 215,
+    y: 157,
+  },
 });
 
 player.draw();
@@ -90,7 +97,7 @@ function animate() {
   background.update();
   shop.update();
   player.update();
-  enemy.update();
+  //   enemy.update();
 
   player.velocity.x = 0;
   enemy.velocity.x = 0;

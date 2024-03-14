@@ -1,5 +1,11 @@
 class Sprite {
-  constructor({ position, imageSrc, scale = 1, frameMax = 1 }) {
+  constructor({
+    position,
+    imageSrc,
+    scale = 1,
+    frameMax = 1,
+    offset = { x: 0, y: 0 },
+  }) {
     this.position = position;
     this.width = 50;
     this.height = 150;
@@ -10,6 +16,7 @@ class Sprite {
     this.frameCurrent = 0;
     this.frameEllapsed = 0;
     this.frameHold = 5;
+    this.offset = offset;
   }
   draw() {
     context.drawImage(
@@ -18,14 +25,13 @@ class Sprite {
       0,
       this.image.width / this.frameMax,
       this.image.height,
-      this.position.x,
-      this.position.y,
+      this.position.x - this.offset.x,
+      this.position.y - this.offset.y,
       (this.image.width / this.frameMax) * this.scale,
       this.image.height * this.scale
     );
   }
-  update() {
-    this.draw();
+  animateFrames() {
     this.frameEllapsed++;
     if (this.frameEllapsed % this.frameHold === 0) {
       if (this.frameCurrent < this.frameMax - 1) {
@@ -35,10 +41,29 @@ class Sprite {
       }
     }
   }
+  update() {
+    this.draw();
+    this.animateFrames();
+  }
 }
-class Figther {
-  constructor({ position, velocity, color = "red", offset }) {
-    this.position = position;
+class Figther extends Sprite {
+  constructor({
+    position,
+    velocity,
+    color = "red",
+    imageSrc,
+    scale = 1,
+    frameMax = 1,
+    offset = { x: 0, y: 0 },
+  }) {
+    super({
+      position,
+      imageSrc,
+      scale,
+      frameMax,
+      offset,
+    });
+
     this.velocity = velocity;
     this.width = 50;
     this.height = 150;
@@ -55,28 +80,19 @@ class Figther {
     this.isAttacking;
     this.color = color;
     this.health = 100;
+    this.frameCurrent = 0;
+    this.frameEllapsed = 0;
+    this.frameHold = 3;
   }
-  draw() {
-    context.fillStyle = this.color;
-    context.fillRect(this.position.x, this.position.y, this.width, this.height);
 
-    //attack box
-    if (this.isAttacking) {
-      context.fillStyle = "green";
-      context.fillRect(
-        this.attackBox.position.x,
-        this.attackBox.position.y,
-        this.attackBox.width,
-        this.attackBox.height
-      );
-    }
-  }
   update() {
     this.draw();
+    this.animateFrames();
     this.attackBox.position.x = this.position.x + this.attackBox.offset.x;
     this.attackBox.position.y = this.position.y;
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
+
     if (this.position.y + this.height + this.velocity.y >= canvas.height - 96) {
       this.velocity.y = 0;
     } else {
