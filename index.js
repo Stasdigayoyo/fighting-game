@@ -46,6 +46,16 @@ const player = new Figther({
     x: 215,
     y: 157,
   },
+  sprites: {
+    idle: {
+      imageSrc: "./img/SamuraiMack/Idle.png",
+      frameMax: 8,
+    },
+    run: {
+      imageSrc: "./img/SamuraiMack/Run.png",
+      frameMax: 8,
+    },
+  },
 });
 
 player.draw();
@@ -102,10 +112,13 @@ function animate() {
   player.velocity.x = 0;
   enemy.velocity.x = 0;
   //player movement
+  player.image = player.sprites.idle.image;
   if (keys.a.pressed && player.lastKey === "a") {
     player.velocity.x = -10;
+    player.image = player.sprites.run.image;
   } else if (keys.d.pressed && player.lastKey === "d") {
     player.velocity.x = 10;
+    player.image = player.sprites.run.image;
   }
   //enemy movement
   if (keys.ArrowLeft.pressed && enemy.lastKey === "ArrowLeft") {

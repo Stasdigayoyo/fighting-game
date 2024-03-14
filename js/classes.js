@@ -55,6 +55,7 @@ class Figther extends Sprite {
     scale = 1,
     frameMax = 1,
     offset = { x: 0, y: 0 },
+    sprites,
   }) {
     super({
       position,
@@ -83,6 +84,12 @@ class Figther extends Sprite {
     this.frameCurrent = 0;
     this.frameEllapsed = 0;
     this.frameHold = 3;
+    this.sprites = sprites;
+
+    for (const sprite in this.sprites) {
+      sprites[sprite].image = new Image();
+      sprites[sprite].image.src = sprites[sprite].imageSrc;
+    }
   }
 
   update() {
