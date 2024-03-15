@@ -6,7 +6,7 @@ canvas.height = 576;
 
 context.fillRect(0, 0, canvas.width, canvas.height);
 
-const gravity = 5;
+const gravity = 1.5;
 
 const background = new Sprite({
   position: {
@@ -54,6 +54,14 @@ const player = new Figther({
     run: {
       imageSrc: "./img/SamuraiMack/Run.png",
       frameMax: 8,
+    },
+    jump: {
+      imageSrc: "./img/SamuraiMack/Jump.png",
+      frameMax: 2,
+    },
+    fall: {
+      imageSrc: "./img/SamuraiMack/Fall.png",
+      frameMax: 2,
     },
   },
 });
@@ -107,19 +115,28 @@ function animate() {
   background.update();
   shop.update();
   player.update();
-  //   enemy.update();
 
+  //   enemy.update();
   player.velocity.x = 0;
   enemy.velocity.x = 0;
   //player movement
-  player.image = player.sprites.idle.image;
+
   if (keys.a.pressed && player.lastKey === "a") {
     player.velocity.x = -10;
-    player.image = player.sprites.run.image;
+    player.switchSprite("run");
   } else if (keys.d.pressed && player.lastKey === "d") {
     player.velocity.x = 10;
-    player.image = player.sprites.run.image;
+    player.switchSprite("run");
+  } else {
+    player.switchSprite("idle");
   }
+  //Jump
+  if (player.velocity.y < 0) {
+    player.switchSprite("jump");
+  } else if (player.velocity.y > 0) {
+    player.switchSprite("fall");
+  }
+
   //enemy movement
   if (keys.ArrowLeft.pressed && enemy.lastKey === "ArrowLeft") {
     enemy.velocity.x = -10;
@@ -172,7 +189,7 @@ window.addEventListener("keydown", (event) => {
       player.lastKey = "a";
       break;
     case "w":
-      player.velocity.y = -40;
+      player.velocity.y = -25;
       break;
     case " ":
       player.attack();
@@ -188,7 +205,7 @@ window.addEventListener("keydown", (event) => {
       enemy.lastKey = "ArrowLeft";
       break;
     case "ArrowUp":
-      enemy.velocity.y = -40;
+      enemy.velocity.y = -25;
       break;
     case "l":
       enemy.attack();

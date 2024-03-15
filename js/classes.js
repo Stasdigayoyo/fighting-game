@@ -83,7 +83,7 @@ class Figther extends Sprite {
     this.health = 100;
     this.frameCurrent = 0;
     this.frameEllapsed = 0;
-    this.frameHold = 3;
+    this.frameHold = 5;
     this.sprites = sprites;
 
     for (const sprite in this.sprites) {
@@ -100,8 +100,10 @@ class Figther extends Sprite {
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
 
+    //function gravity
     if (this.position.y + this.height + this.velocity.y >= canvas.height - 96) {
       this.velocity.y = 0;
+      this.position.y = 330;
     } else {
       this.velocity.y += gravity;
     }
@@ -111,5 +113,39 @@ class Figther extends Sprite {
     setTimeout(() => {
       this.isAttacking = false;
     }, 100);
+  }
+  switchSprite(sprite) {
+    switch (sprite) {
+      case "idle":
+        if (this.image !== this.sprites.idle.image) {
+          this.image = this.sprites.idle.image;
+          this.frameMax = this.sprites.idle.frameMax;
+          this.frameCurrent = 0;
+        }
+
+        break;
+      case "run":
+        if (this.image !== this.sprites.run.image) {
+          this.image = this.sprites.run.image;
+          this.frameMax = this.sprites.run.frameMax;
+          this.frameCurrent = 0;
+        }
+
+        break;
+      case "jump":
+        if (this.image !== this.sprites.jump.image) {
+          this.image = this.sprites.jump.image;
+          this.frameMax = this.sprites.jump.frameMax;
+          this.frameCurrent = 0;
+        }
+        break;
+
+      case "fall":
+        if (this.image !== this.sprites.fall.image) {
+          this.image = this.sprites.fall.image;
+          this.frameMax = this.sprites.fall.frameMax;
+        }
+        break;
+    }
   }
 }
