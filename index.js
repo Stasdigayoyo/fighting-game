@@ -63,6 +63,10 @@ const player = new Figther({
       imageSrc: "./img/SamuraiMack/Fall.png",
       frameMax: 2,
     },
+    attack1: {
+      imageSrc: "./img/SamuraiMack/Attack1.png",
+      frameMax: 6,
+    },
   },
 });
 
