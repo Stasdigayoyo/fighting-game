@@ -68,6 +68,14 @@ const player = new Figther({
       frameMax: 6,
     },
   },
+  attackBox: {
+    offset: {
+      x: 100,
+      y: 50,
+    },
+    width: 157,
+    height: 50,
+  },
 });
 
 player.draw();
@@ -115,6 +123,14 @@ const enemy = new Figther({
       imageSrc: "./img/kenji/Attack1.png",
       frameMax: 4,
     },
+  },
+  attackBox: {
+    offset: {
+      x: -172,
+      y: 50,
+    },
+    width: 157,
+    height: 50,
   },
 });
 enemy.draw();
@@ -194,23 +210,34 @@ function animate() {
       rentangle1: player,
       rentangle2: enemy,
     }) &&
-    player.isAttacking
+    player.isAttacking &&
+    player.frameCurrent === 4
   ) {
     player.isAttacking = false;
-    enemy.health -= 10;
+    enemy.health -= 15;
     document.querySelector("#enemyHealth").style.width = enemy.health + "%";
   }
+  //if player missed
+  if (player.isAttacking && player.frameCurrent === 4) {
+    player.isAttacking = false;
+  }
+
   //enemy collision
   if (
     rectangularCollision({
       rentangle1: enemy,
       rentangle2: player,
     }) &&
-    enemy.isAttacking
+    enemy.isAttacking &&
+    enemy.frameCurrent === 2
   ) {
     enemy.isAttacking = false;
     player.health -= 10;
     document.querySelector("#playerHealth").style.width = player.health + "%";
+  }
+  //if enemy missed
+  if (enemy.isAttacking && enemy.frameCurrent === 2) {
+    enemy.isAttacking = false;
   }
 
   //end game based on health
