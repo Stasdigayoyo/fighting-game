@@ -83,7 +83,7 @@ class Figther extends Sprite {
     this.health = 100;
     this.frameCurrent = 0;
     this.frameEllapsed = 0;
-    this.frameHold = 3;
+    this.frameHold = 5;
     this.sprites = sprites;
 
     for (const sprite in this.sprites) {
@@ -150,12 +150,14 @@ class Figther extends Sprite {
         if (this.image !== this.sprites.fall.image) {
           this.image = this.sprites.fall.image;
           this.frameMax = this.sprites.fall.frameMax;
+          this.frameCurrent = 0;
         }
         break;
       case "attack1":
         if (this.image !== this.sprites.attack1.image) {
           this.image = this.sprites.attack1.image;
           this.frameMax = this.sprites.attack1.frameMax;
+          this.frameCurrent = 0;
         }
         break;
     }
