@@ -67,6 +67,10 @@ const player = new Figther({
       imageSrc: "./img/SamuraiMack/Attack1.png",
       frameMax: 6,
     },
+    takeHit: {
+      imageSrc: "./img/samuraiMack/Take Hit - white silhouette.png",
+      frameMax: 4,
+    },
   },
   attackBox: {
     offset: {
@@ -122,6 +126,10 @@ const enemy = new Figther({
     attack1: {
       imageSrc: "./img/kenji/Attack1.png",
       frameMax: 4,
+    },
+    takeHit: {
+      imageSrc: "./img/kenji/Take Hit.png",
+      frameMax: 3,
     },
   },
   attackBox: {
@@ -204,7 +212,7 @@ function animate() {
   }
 
   //detect for collision
-  //player collision
+  //player collision & enemy gets hit
   if (
     rectangularCollision({
       rentangle1: player,
@@ -213,8 +221,9 @@ function animate() {
     player.isAttacking &&
     player.frameCurrent === 4
   ) {
+    enemy.takeHit();
     player.isAttacking = false;
-    enemy.health -= 15;
+    enemy.health -= 10;
     document.querySelector("#enemyHealth").style.width = enemy.health + "%";
   }
   //if player missed
@@ -222,7 +231,7 @@ function animate() {
     player.isAttacking = false;
   }
 
-  //enemy collision
+  //enemy collision & player gets hit
   if (
     rectangularCollision({
       rentangle1: enemy,
@@ -231,8 +240,8 @@ function animate() {
     enemy.isAttacking &&
     enemy.frameCurrent === 2
   ) {
+    player.takeHit();
     enemy.isAttacking = false;
-    player.health -= 10;
     document.querySelector("#playerHealth").style.width = player.health + "%";
   }
   //if enemy missed
