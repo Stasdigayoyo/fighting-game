@@ -1,6 +1,10 @@
 * {
   box-sizing: border-box;
+  font-family: "Press Start 2P", system-ui;
+  font-weight: 400;
+  font-style: normal;
 }
+
 .container {
   position: relative;
   display: inline-block;
@@ -14,37 +18,39 @@
 }
 
 .health__bar_player {
-  background-color: yellow;
+  background-color: red;
   height: 30px;
   width: 100%;
 }
 .health__bar_timer {
-  background-color: red;
-  height: 100px;
+  background-color: black;
+  height: 50px;
   width: 100px;
   flex-shrink: 0;
   display: flex;
   justify-content: center;
   align-items: center;
+  color: white;
+  border: 4px solid white;
 }
 .enemy__parent,
 .player__parent {
   position: relative;
-  height: 30px;
   width: 100%;
+  border: 4px solid white;
 }
 .player__parent {
   display: flex;
   justify-content: flex-end;
 }
 .health__bar_enemy {
-  background-color: yellow;
+  background-color: red;
   height: 30px;
 }
 .health__bar_enemy_absolute,
 .health__bar_player_absolute {
   position: absolute;
-  background-color: blue;
+  background-color: #818cf8;
   top: 0;
   right: 0;
   bottom: 0;

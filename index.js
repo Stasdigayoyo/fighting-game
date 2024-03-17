@@ -180,6 +180,8 @@ function animate() {
   context.fillRect(0, 0, canvas.width, canvas.height);
   background.update();
   shop.update();
+  context.fillStyle = "rgba(255,255,255,0.1)";
+  context.fillRect(0, 0, canvas.width, canvas.height);
   player.update();
   enemy.update();
 
@@ -231,7 +233,9 @@ function animate() {
   ) {
     enemy.takeHit();
     player.isAttacking = false;
-    document.querySelector("#enemyHealth").style.width = enemy.health + "%";
+    gsap.to("#enemyHealth", {
+      width: enemy.health + "%",
+    });
   }
   //if player missed
   if (player.isAttacking && player.frameCurrent === 4) {
@@ -250,7 +254,10 @@ function animate() {
     player.takeHit();
     enemy.isAttacking = false;
     enemy.health -= 5;
-    document.querySelector("#playerHealth").style.width = player.health + "%";
+
+    gsap.to("#playerHealth", {
+      width: player.health + "%",
+    });
   }
   //if enemy missed
   if (enemy.isAttacking && enemy.frameCurrent === 2) {
